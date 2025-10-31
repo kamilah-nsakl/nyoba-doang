@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Matematika Sepeda - SMPIT AL-AMIN</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a6d3b, #2ecc71);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        
+        .logo img {
+            height: 60px;
+            margin-right: 15px;
+        }
+        
+        .logo h1 {
+            font-size: 24px;
+            color: #f1c40f;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .game-title {
+            font-size: 28px;
+            margin-bottom: 5px;
+            color: #f1c40f;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .game-container {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .track {
+            height: 120px;
+            background: #8B4513;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            border: 3px solid #654321;
+        }
+        
+        .track-line {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: white;
+            transform: translateY(-50%);
+        }
+        
+        .biker {
+            position: absolute;
+            top: 50%;
+            left: 50px;
+            transform: translateY(-50%);
+            transition: left 0.5s ease;
+            z-index: 10;
+        }
+        
+        .bike {
+            width: 80px;
+            height: 50px;
+            position: relative;
+        }
+        
+        .bike-frame {
+            width: 70px;
+            height: 30px;
+            background: #3498db;
+            border-radius: 5px;
+            position: absolute;
+            top: 10px;
+        }
+        
+        .bike-wheels {
+            display: flex;
+            justify-content: space-between;
+            position: absolute;
+            top: 35px;
+            width: 100%;
+        }
+        
+        .wheel {
+            width: 20px;
+            height: 20px;
+            background: #333;
+            border-radius: 50%;
+            position: relative;
+        }
+        
+        .wheel::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            background: #ccc;
+            border-radius: 50%;
+        }
+        
+        .posts {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        
+        .post {
+            width: 60px;
+            height: 80px;
+            background: #e74c3c;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .post::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 10px;
+            height: 10px;
+            background: #c0392b;
+            border-radius: 50%;
+        }
+        
+        .post.active {
+            background: #f1c40f;
+            color: #2c3e50;
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .question-container {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .question {
+            font-size: 18px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        
+        .option {
+            padding: 12px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .option:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .option.correct {
+            background: #2ecc71;
+        }
+        
+        .option.wrong {
+            background: #e74c3c;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-start {
+            background: #f1c40f;
+            color: #2c3e50;
+        }
+        
+        .btn-start:hover {
+            background: #f39c12;
+        }
+        
+        .btn-next {
+            background: #2ecc71;
+            color: white;
+        }
+        
+        .btn-next:hover {
+            background: #27ae60;
+        }
+        
+        .btn-restart {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .btn-restart:hover {
+            background: #c0392b;
+        }
+        
+        .progress-container {
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+        }
+        
+        .progress-bar {
+            height: 20px;
+            background: #34495e;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .progress {
+            height: 100%;
+            background: #f1c40f;
+            width: 0%;
+            transition: width 0.5s;
+        }
+        
+        .score {
+            font-size: 18px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .finish-line {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 10px;
+            background: repeating-linear-gradient(
+                45deg,
+                white,
+                white 10px,
+                black 10px,
+                black 20px
+            );
+        }
+        
+        .finish-message {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #f1c40f;
+            margin: 20px 0;
+            display: none;
+        }
+        
+        @media (max-width: 600px) {
+            .options {
+                grid-template-columns: 1fr;
+            }
+            
+            .posts {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 10px;
+            }
+            
+            .post {
+                width: 45px;
+                height: 60px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <h1>SMPIT AL-AMIN</h1>
+        </div>
+        <h1 class="game-title">Game Matematika Bersepeda</h1>
+        <p class="subtitle">Jawab pertanyaan dengan benar untuk mencapai garis finish!</p>
+    </div>
+    
+    <div class="game-container">
+        <div class="track">
+            <div class="track-line"></div>
+            <div class="biker">
+                <div class="bike">
+                    <div class="bike-frame"></div>
+                    <div class="bike-wheels">
+                        <div class="wheel"></div>
+                        <div class="wheel"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="finish-line"></div>
+        </div>
+        
+        <div class="posts">
+            <div class="post" id="post1">Pos 1</div>
+            <div class="post" id="post2">Pos 2</div>
+            <div class="post" id="post3">Pos 3</div>
+            <div class="post" id="post4">Pos 4</div>
+            <div class="post" id="post5">Finish</div>
+        </div>
+        
+        <div class="question-container">
+            <div class="question" id="question-text">Klik tombol Mulai untuk memulai permainan!</div>
+            <div class="options" id="options-container">
+                <!-- Opsi jawaban akan diisi oleh JavaScript -->
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button class="btn btn-start" id="start-btn">Mulai</button>
+            <button class="btn btn-next" id="next-btn" disabled>Lanjut</button>
+            <button class="btn btn-restart" id="restart-btn" disabled>Ulangi</button>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress" id="progress-bar"></div>
+            </div>
+            <div class="score" id="score">Skor: 0</div>
+        </div>
+        
+        <div class="finish-message" id="finish-message">
+            Selamat! Kamu telah menyelesaikan permainan!
+        </div>
+    </div>
+
+    <script>
+        // Data pertanyaan matematika untuk SMP
+        const questions = [
+            {
+                question: "Hasil dari 3² + 4² adalah...",
+                options: ["7", "12", "25", "49"],
+                correct: 2
+            },
+            {
+                question: "Bentuk sederhana dari 3x + 2y - x + 4y adalah...",
+                options: ["2x + 6y", "4x + 6y", "2x + 2y", "4x + 2y"],
+                correct: 0
+            },
+            {
+                question: "Nilai dari 2/3 + 1/4 adalah...",
+                options: ["3/7", "5/12", "11/12", "3/4"],
+                correct: 2
+            },
+            {
+                question: "Jika a = 5 dan b = 3, maka nilai dari 2a - b adalah...",
+                options: ["4", "7", "8", "13"],
+                correct: 1
+            },
+            {
+                question: "Luas persegi dengan sisi 8 cm adalah...",
+                options: ["32 cm²", "64 cm²", "16 cm²", "48 cm²"],
+                correct: 1
+            }
+        ];
+
+        // Elemen DOM
+        const startBtn = document.getElementById('start-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const progressBar = document.getElementById('progress-bar');
+        const scoreDisplay = document.getElementById('score');
+        const finishMessage = document.getElementById('finish-message');
+        const biker = document.querySelector('.biker');
+        const posts = document.querySelectorAll('.post');
+
+        // Variabel game
+        let currentQuestion = 0;
+        let score = 0;
+        let gameStarted = false;
+
+        // Fungsi untuk memulai permainan
+        function startGame() {
+            gameStarted = true;
+            currentQuestion = 0;
+            score = 0;
+            updateScore();
+            biker.style.left = '50px';
+            progressBar.style.width = '0%';
+            finishMessage.style.display = 'none';
+            
+            // Reset semua pos
+            posts.forEach(post => post.classList.remove('active'));
+            posts[0].classList.add('active');
+            
+            // Tampilkan pertanyaan pertama
+            showQuestion();
+            
+            // Update tombol
+            startBtn.disabled = true;
+            nextBtn.disabled = true;
+            restartBtn.disabled = false;
+        }
+
+        // Fungsi untuk menampilkan pertanyaan
+        function showQuestion() {
+            if (currentQuestion < questions.length) {
+                const question = questions[currentQuestion];
+                questionText.textContent = question.question;
+                
+                // Kosongkan opsi sebelumnya
+                optionsContainer.innerHTML = '';
+                
+                // Tambahkan opsi baru
+                question.options.forEach((option, index) => {
+                    const button = document.createElement('button');
+                    button.classList.add('option');
+                    button.textContent = option;
+                    button.addEventListener('click', () => selectOption(index));
+                    optionsContainer.appendChild(button);
+                });
+                
+                // Update progress bar
+                progressBar.style.width = `${(currentQuestion / questions.length) * 100}%`;
+            } else {
+                finishGame();
+            }
+        }
+
+        // Fungsi untuk memilih opsi
+        function selectOption(selectedIndex) {
+            if (!gameStarted) return;
+            
+            const question = questions[currentQuestion];
+            const options = document.querySelectorAll('.option');
+            
+            // Nonaktifkan semua opsi setelah memilih
+            options.forEach(option => {
+                option.disabled = true;
+            });
+            
+            // Tandai jawaban yang benar dan salah
+            if (selectedIndex === question.correct) {
+                options[selectedIndex].classList.add('correct');
+                score += 20;
+                updateScore();
+            } else {
+                options[selectedIndex].classList.add('wrong');
+                options[question.correct].classList.add('correct');
+            }
+            
+            // Aktifkan tombol lanjut
+            nextBtn.disabled = false;
+        }
+
+        // Fungsi untuk pindah ke pertanyaan berikutnya
+        function nextQuestion() {
+            if (!gameStarted) return;
+            
+            currentQuestion++;
+            
+            // Pindahkan sepeda ke pos berikutnya
+            const newPosition = 50 + (currentQuestion * 150);
+            biker.style.left = `${Math.min(newPosition, 650)}px`;
+            
+            // Update pos aktif
+            posts.forEach(post => post.classList.remove('active'));
+            if (currentQuestion < posts.length) {
+                posts[currentQuestion].classList.add('active');
+            }
+            
+            // Tampilkan pertanyaan berikutnya atau selesaikan game
+            if (currentQuestion < questions.length) {
+                showQuestion();
+                nextBtn.disabled = true;
+            } else {
+                finishGame();
+            }
+        }
+
+        // Fungsi untuk menyelesaikan permainan
+        function finishGame() {
+            gameStarted = false;
+            questionText.textContent = "Permainan selesai! Kamu berhasil mencapai garis finish!";
+            optionsContainer.innerHTML = '';
+            progressBar.style.width = '100%';
+            finishMessage.style.display = 'block';
+            nextBtn.disabled = true;
+            restartBtn.disabled = false;
+        }
+
+        // Fungsi untuk memperbarui skor
+        function updateScore() {
+            scoreDisplay.textContent = `Skor: ${score}`;
+        }
+
+        // Event listeners
+        startBtn.addEventListener('click', startGame);
+        nextBtn.addEventListener('click', nextQuestion);
+        restartBtn.addEventListener('click', startGame);
+    </script>
+</body>
+</html>
