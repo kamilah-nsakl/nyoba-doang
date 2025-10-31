@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petualangan Ilmu - SMPIT AL-AMIN DEPOK</title>
+    <style>
+        :root {
+            --hijau-gelap: #1a4d2e;
+            --hijau-sedang: #2d6a4f;
+            --hijau-muda: #40916c;
+            --hijau-cerah: #52b788;
+            --hijau-pastel: #74c69d;
+            --kuning: #f9c74f;
+            --putih: #ffffff;
+            --hitam: #2d3436;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--hijau-gelap) 0%, var(--hijau-sedang) 100%);
+            color: var(--putih);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .logo-sekolah {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .logo-circle {
+            width: 80px;
+            height: 80px;
+            background: var(--hijau-muda);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--putih);
+            border: 3px solid var(--kuning);
+            box-shadow: 0 0 15px rgba(249, 199, 79, 0.5);
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            color: var(--putih);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(to right, var(--kuning), var(--hijau-pastel));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            color: var(--hijau-pastel);
+            margin-bottom: 5px;
+        }
+        
+        .motto {
+            font-style: italic;
+            color: var(--kuning);
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+        
+        .game-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .game-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .game-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+        }
+        
+        .game-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            color: var(--kuning);
+        }
+        
+        .game-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--putih);
+        }
+        
+        .game-description {
+            color: var(--hijau-pastel);
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+        
+        .play-button {
+            background: linear-gradient(to right, var(--hijau-muda), var(--hijau-cerah));
+            color: var(--putih);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(64, 145, 108, 0.4);
+        }
+        
+        .play-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(64, 145, 108, 0.6);
+        }
+        
+        .game-content {
+            display: none;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .active {
+            display: block;
+        }
+        
+        .back-button {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--putih);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.3s;
+        }
+        
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .quiz-option {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .quiz-option:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(5px);
+        }
+        
+        .correct {
+            background: var(--hijau-muda);
+            color: var(--putih);
+        }
+        
+        .incorrect {
+            background: #e74c3c;
+            color: var(--putih);
+        }
+        
+        .math-display {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-size: 1.5rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            margin: 10px 0;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--putih);
+        }
+        
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .submit-button {
+            background: linear-gradient(to right, var(--hijau-muda), var(--hijau-cerah));
+            color: var(--putih);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(64, 145, 108, 0.4);
+            width: 100%;
+        }
+        
+        .submit-button:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 20px rgba(64, 145, 108, 0.6);
+        }
+        
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .success {
+            background: rgba(64, 145, 108, 0.3);
+            color: var(--hijau-pastel);
+            border: 1px solid var(--hijau-muda);
+        }
+        
+        .error {
+            background: rgba(231, 76, 60, 0.3);
+            color: #ff9e9e;
+            border: 1px solid #e74c3c;
+        }
+        
+        .score-display {
+            font-size: 1.3rem;
+            text-align: center;
+            margin: 20px 0;
+            color: var(--kuning);
+        }
+        
+        .timer {
+            font-size: 2rem;
+            text-align: center;
+            margin: 20px 0;
+            font-weight: bold;
+            color: var(--kuning);
+            text-shadow: 0 0 10px rgba(249, 199, 79, 0.5);
+        }
+        
+        .timer-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .timer-button {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--putih);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+        
+        .timer-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .leaderboard {
+            margin-top: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .leaderboard h3 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: var(--kuning);
+        }
+        
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .leaderboard-item:last-child {
+            border-bottom: none;
+        }
+        
+        @media (max-width: 768px) {
+            .game-container {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .logo-circle {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+        }
+        
+        .badge {
+            display: inline-block;
+            background: var(--kuning);
+            color: var(--hijau-gelap);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        .islamic-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(64, 145, 108, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(249, 199, 79, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+    <div class="islamic-pattern"></div>
+    
+    <div class="container">
+        <header>
+            <div class="logo-sekolah">
+                <div class="logo-circle">IA</div>
+                <div>
+                    <h1>PETUALANGAN ILMU</h1>
+                    <div class="subtitle">SMPIT AL-AMIN DEPOK</div>
+                </div>
+            </div>
+            <div class="motto">"Menuntut Ilmu adalah Ibadah"</div>
+        </header>
+        
+        <div class="game-container" id="game-container">
+            <!-- Kartu game akan diisi oleh JavaScript -->
+        </div>
+        
+        <div id="game-content" class="game-content"></div>
+        
+        <div class="leaderboard">
+            <h3>🏆 Papan Skor Terbaik</h3>
+            <div id="leaderboard-list">
+                <!-- Daftar skor akan diisi oleh JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data game edukasi dengan tema Islami
+        const educationalGames = [
+            {
+                id: 'islamic-quiz',
+                title: 'Kuis Islami',
+                icon: '🕌',
+                description: 'Uji pengetahuan agama Islam dengan kuis menarik',
+                color: '#1a4d2e',
+                content: `
+                    <button class="back-button" onclick="showGameGrid()">← Kembali ke Menu</button>
+                    <h2>Kuis Islami</h2>
+                    <p>Jawab pertanyaan-pertanyaan seputar agama Islam:</p>
+                    
+                    <select id="difficulty">
+                        <option value="easy">Tingkat Dasar</option>
+                        <option value="medium">Tingkat Menengah</option>
+                        <option value="hard">Tingkat Lanjut</option>
+                    </select>
+                    
+                    <button class="submit-button" onclick="generateIslamicQuiz()">Mulai Kuis</button>
+                    
+                    <div id="quiz-container"></div>
+                `
+            },
+            {
+                id: 'math-challenge',
+                title: 'Tantangan Matematika',
+                icon: '🧮',
+                description: 'Asah kemampuan matematika dengan soal-soal seru',
+                color: '#2d6a4f',
+                content: `
+                    <button class="back-button" onclick="showGameGrid()">← Kembali ke Menu</button>
+                    <h2>Tantangan Matematika</h2>
+                    <p>Selesaikan soal-soal matematika dalam waktu terbatas!</p>
+                    
+                    <div class="timer" id="math-timer">02:00</div>
+                    
+                    <button class="submit-button" onclick="startMathChallenge()">Mulai Tantangan</button>
+                    
+                    <div id="math-container"></div>
+                `
+            },
+            {
+                id: 'science-explorer',
+                title: 'Eksplorasi Sains',
+                icon: '🔬',
+                description: 'Jelajahi keajaiban alam dan sains dalam Islam',
+                color: '#40916c',
+                content: `
+                    <button class="back-button" onclick="showGameGrid()">← Kembali ke Menu</button>
+                    <h2>Eksplorasi Sains & Alam</h2>
+                    <p>Temukan keajaiban ciptaan Allah dalam sains:</p>
+                    
+                    <div id="science-container">
+                        <div class="game-card" onclick="showScienceTopic('astronomy')">
+                            <div class="game-icon">🌌</div>
+                            <div class="game-title">Astronomi Islam</div>
+                            <div class="game-description">Pelajari tentang langit dan benda-benda langit</div>
+                        </div>
+                        
+                        <div class="game-card" onclick="showScienceTopic('biology')">
+                            <div class="game-icon">🌱</div>
+                            <div class="game-title">Biologi dalam Al-Quran</div>
+                            <div class="game-description">Temukan makhluk hidup dalam ayat-ayat suci</div>
+                        </div>
+                        
+                        <div class="game-card" onclick="showScienceTopic('physics')">
+                            <div class="game-icon">⚡</div>
+                            <div class="game-title">Fisika & Alam Semesta</div>
+                            <div class="game-description">Pelajari hukum alam menurut Islam</div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 'arabic-learning',
+                title: 'Belajar Bahasa Arab',
+                icon: '📖',
+                description: 'Pelajari kosakata bahasa Arab dasar',
+                color: '#52b788',
+                content: `
+                    <button class="back-button" onclick="showGameGrid()">← Kembali ke Menu</button>
+                    <h2>Belajar Bahasa Arab</h2>
+                    <p>Pelajari kosakata bahasa Arab yang sering digunakan:</p>
+                    
+                    <div id="arabic-container">
+                        <div class="math-display" id="arabic-word">Memuat...</div>
+                        <input type="text" id="arabic-input" placeholder="Tulis arti dalam bahasa Indonesia">
+                        <button class="submit-button" onclick="checkArabicTranslation()">Periksa Jawaban</button>
+                        <div id="arabic-result"></div>
+                    </div>
+                    
+                    <button class="submit-button" style="margin-top: 20px;" onclick="newArabicWord()">Kata Baru</button>
+                `
+            },
+            {
+                id: 'history-quest',
+                title: 'Misi Sejarah Islam',
+                icon: '🏛️',
+                description: 'Jelajahi peradaban dan sejarah Islam',
+                color: '#74c69d',
+                content: `
+                    <button class="back-button" onclick="showGameGrid()">← Kembali ke Menu</button>
+                    <h2>Misi Sejarah Islam</h2>
+                    <p>Telusuri perjalanan sejarah peradaban Islam:</p>
+                    
+                    <div id="history-container">
+                        <button class="submit-button" onclick="startHistoryQuest()">Mulai Misi Sejarah</button>
+                    </div>
+                `
+            },
+            {
+                id: 'puzzle-game',
+                title: 'Teka-Teki Ilmu',
+                icon: '🧩',
+                description: 'Asah logika dengan teka-teki menyenangkan',
+                color: '#f9c74f',
+                content: `
+                    <button class="back-button" onclick="showGameGrid()">← Kembali ke Menu</button>
+                    <h2>Teka-Teki Ilmu</h2>
+                    <p>Selesaikan teka-teki logika dan matematika:</p>
+                    
+                    <div id="puzzle-container">
+                        <button class="submit-button" onclick="generatePuzzle()">Mulai Teka-Teki</button>
+                    </div>
+                `
+            }
+        ];
+
+        // Variabel global
+        let currentQuiz = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let timerInterval;
+        let mathTimerSeconds = 120; // 2 menit untuk tantangan matematika
+        let isMathTimerRunning = false;
+
+        // Inisialisasi game
+        document.addEventListener('DOMContentLoaded', function() {
+            renderGameGrid();
+            initializeLeaderboard();
+            initializeArabicLearning();
+        });
+
+        // Render grid game
+        function renderGameGrid() {
+            const gameContainer = document.getElementById('game-container');
+            gameContainer.innerHTML = '';
+            
+            educationalGames.forEach(game => {
+                const gameCard = document.createElement('div');
+                gameCard.className = 'game-card';
+                gameCard.style.borderTop = `5px solid ${game.color}`;
+                gameCard.innerHTML = `
+                    <div class="game-icon">${game.icon}</div>
+                    <h3 class="game-title">${game.title}</h3>
+                    <p class="game-description">${game.description}</p>
+                    <button class="play-button" onclick="showGameContent('${game.id}')">Mainkan</button>
+                `;
+                gameContainer.appendChild(gameCard);
+            });
+        }
+
+        // Tampilkan konten game
+        function showGameContent(gameId) {
+            const game = educationalGames.find(g => g.id === gameId);
+            if (game) {
+                document.getElementById('game-container').style.display = 'none';
+                document.getElementById('game-content').innerHTML = game.content;
+                document.getElementById('game-content').classList.add('active');
+                
+                // Inisialisasi game khusus
+                if (gameId === 'arabic-learning') {
+                    newArabicWord();
+                }
+            }
+        }
+
+        // Kembali ke grid game
+        function showGameGrid() {
+            document.getElementById('game-container').style.display = 'grid';
+            document.getElementById('game-content').classList.remove('active');
+            
+            // Hentikan timer jika berjalan
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                isMathTimerRunning = false;
+            }
+        }
+
+        // ===== KUIS ISLAMI =====
+        function generateIslamicQuiz() {
+            const difficulty = document.getElementById('difficulty').value;
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = '';
+            currentQuiz = [];
+            currentQuestionIndex = 0;
+            score = 0;
+            
+            // Generate soal berdasarkan tingkat kesulitan
+            let questions = [];
+            
+            switch(difficulty) {
+                case 'easy':
+                    questions = [
+                        {
+                            question: "Berapa jumlah Rukun Islam?",
+                            options: ["4", "5", "6", "7"],
+                            answer: 1
+                        },
+                        {
+                            question: "Siapakah Nabi terakhir dalam Islam?",
+                            options: ["Nabi Ibrahim", "Nabi Musa", "Nabi Isa", "Nabi Muhammad"],
+                            answer: 3
+                        },
+                        {
+                            question: "Kitab suci umat Islam adalah?",
+                            options: ["Taurat", "Injil", "Al-Quran", "Zabur"],
+                            answer: 2
+                        },
+                        {
+                            question: "Kiblat umat Islam adalah?",
+                            options: ["Masjid Nabawi", "Masjidil Aqsa", "Ka'bah", "Masjidil Haram"],
+                            answer: 2
+                        },
+                        {
+                            question: "Shalat wajib dalam sehari semalam berjumlah?",
+                            options: ["3 waktu", "4 waktu", "5 waktu", "6 waktu"],
+                            answer: 2
+                        }
+                    ];
+                    break;
+                case 'medium':
+                    questions = [
+                        {
+                            question: "Siapakah Khalifah pertama setelah Nabi Muhammad wafat?",
+                            options: ["Umar bin Khattab", "Abu Bakar Ash-Shiddiq", "Utsman bin Affan", "Ali bin Abi Thalib"],
+                            answer: 1
+                        },
+                        {
+                            question: "Berapa jumlah Surah dalam Al-Quran?",
+                            options: ["110", "114", "120", "124"],
+                            answer: 1
+                        },
+                        {
+                            question: "Puasa wajib dilaksanakan pada bulan?",
+                            options: ["Syawal", "Ramadhan", "Dzulhijjah", "Muharram"],
+                            answer: 1
+                        },
+                        {
+                            question: "Malaikat yang bertugas menyampaikan wahyu adalah?",
+                            options: ["Mikail", "Israfil", "Jibril", "Izrail"],
+                            answer: 2
+                        },
+                        {
+                            question: "Zakat fitrah dibayarkan dengan?",
+                            options: ["Uang", "Emas", "Beras/makanan pokok", "Perak"],
+                            answer: 2
+                        }
+                    ];
+                    break;
+                case 'hard':
+                    questions = [
+                        {
+                            question: "Siapakah penulis kitab Shahih Bukhari?",
+                            options: ["Imam Muslim", "Imam Bukhari", "Imam Ahmad", "Imam Malik"],
+                            answer: 1
+                        },
+                        {
+                            question: "Berapa jumlah ayat dalam Surah Al-Fatihah?",
+                            options: ["5", "6", "7", "8"],
+                            answer: 2
+                        },
+                        {
+                            question: "Perang pertama dalam Islam adalah?",
+                            options: ["Perang Uhud", "Perang Badar", "Perang Khandaq", "Perang Hunain"],
+                            answer: 1
+                        },
+                        {
+                            question: "Siapakah ibu kandung Nabi Muhammad?",
+                            options: ["Aminah", "Khadijah", "Halimah", "Fatimah"],
+                            answer: 0
+                        },
+                        {
+                            question: "Berapa lama Nabi Muhammad menerima wahyu di Mekah?",
+                            options: ["10 tahun", "13 tahun", "15 tahun", "20 tahun"],
+                            answer: 1
+                        }
+                    ];
+                    break;
+            }
+            
+            currentQuiz = questions;
+            displayIslamicQuestion();
+        }
+
+        function displayIslamicQuestion() {
+            const container = document.getElementById('quiz-container');
+            if (currentQuestionIndex >= currentQuiz.length) {
+                // Kuis selesai
+                container.innerHTML = `
+                    <h3>Kuis Selesai!</h3>
+                    <div class="score-display">Skor Anda: ${score} dari ${currentQuiz.length}</div>
+                    <button class="submit-button" onclick="generateIslamicQuiz()">Ulangi Kuis</button>
+                `;
+                
+                // Update leaderboard
+                updateLeaderboard('Kuis Islami', score, currentQuiz.length);
+                return;
+            }
+            
+            const question = currentQuiz[currentQuestionIndex];
+            let optionsHTML = '';
+            
+            question.options.forEach((option, index) => {
+                optionsHTML += `
+                    <div class="quiz-option" onclick="checkIslamicAnswer(${index})">
+                        ${option}
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = `
+                <h3>Soal ${currentQuestionIndex + 1} dari ${currentQuiz.length}</h3>
+                <div class="math-display">${question.question}</div>
+                ${optionsHTML}
+                <div class="score-display">Skor: ${score}</div>
+            `;
+        }
+
+        function checkIslamicAnswer(selectedIndex) {
+            const question = currentQuiz[currentQuestionIndex];
+            const options = document.querySelectorAll('.quiz-option');
+            
+            options.forEach((option, index) => {
+                if (index === question.answer) {
+                    option.classList.add('correct');
+                } else if (index === selectedIndex && selectedIndex !== question.answer) {
+                    option.classList.add('incorrect');
+                }
+                option.style.pointerEvents = 'none';
+            });
+            
+            if (selectedIndex === question.answer) {
+                score++;
+            }
+            
+            setTimeout(() => {
+                currentQuestionIndex++;
+                displayIslamicQuestion();
+            }, 1500);
+        }
+
+        // ===== BAHASA ARAB =====
+        function initializeArabicLearning() {
+            window.arabicVocabulary = [
+                { arabic: 'كِتَاب', indonesian: 'buku' },
+                { arabic: 'قَلَم', indonesian: 'pensil' },
+                { arabic: 'مَدْرَسَة', indonesian: 'sekolah' },
+                { arabic: 'مُعَلِّم', indonesian: 'guru' },
+                { arabic: 'طَالِب', indonesian: 'pelajar' },
+                { arabic: 'بَيْت', indonesian: 'rumah' },
+                { arabic: 'أُسْرَة', indonesian: 'keluarga' },
+                { arabic: 'وَلَد', indonesian: 'anak laki-laki' },
+                { arabic: 'بِنْت', indonesian: 'anak perempuan' },
+                { arabic: 'مَاء', indonesian: 'air' },
+                { arabic: 'طَعَام', indonesian: 'makanan' },
+                { arabic: 'صَدِيق', indonesian: 'teman' },
+                { arabic: 'الله', indonesian: 'Allah' },
+                { arabic: 'رَسُول', indonesian: 'rasul' },
+                { arabic: 'إِسْلَام', indonesian: 'islam' }
+            ];
+            
+            window.currentArabicWord = null;
+        }
+
+        function newArabicWord() {
+            const randomIndex = Math.floor(Math.random() * window.arabicVocabulary.length);
+            window.currentArabicWord = window.arabicVocabulary[randomIndex];
+            
+            document.getElementById('arabic-word').textContent = window.currentArabicWord.arabic;
+            document.getElementById('arabic-input').value = '';
+            document.getElementById('arabic-result').innerHTML = '';
+        }
+
+        function checkArabicTranslation() {
+            const userInput = document.getElementById('arabic-input').value.trim().toLowerCase();
+            const correctAnswer = window.currentArabicWord.indonesian.toLowerCase();
+            const resultDiv = document.getElementById('arabic-result');
+            
+            if (userInput === correctAnswer) {
+                resultDiv.innerHTML = '<div class="result success">Benar! 🎉</div>';
+            } else {
+                resultDiv.innerHTML = `
+                    <div class="result error">Salah 😔</div>
+                    <p>Arti yang benar: <strong>${window.currentArabicWord.indonesian}</strong></p>
+                `;
+            }
+        }
+
+        // ===== LEADERBOARD =====
+        function initializeLeaderboard() {
+            // Inisialisasi leaderboard kosong
+            if (!localStorage.getItem('islamicGameLeaderboard')) {
+                localStorage.setItem('islamicGameLeaderboard', JSON.stringify([]));
+            }
+            renderLeaderboard();
+        }
+
+        function updateLeaderboard(gameName, score, totalQuestions) {
+            const leaderboard = JSON.parse(localStorage.getItem('islamicGameLeaderboard'));
+            const percentage = Math.round((score / totalQuestions) * 100);
+            
+            leaderboard.push({
+                game: gameName,
+                score: score,
+                total: totalQuestions,
+                percentage: percentage,
+                date: new Date().toLocaleDateString('id-ID')
+            });
+            
+            // Urutkan berdasarkan persentase tertinggi
+            leaderboard.sort((a, b) => b.percentage - a.percentage);
+            
+            // Simpan hanya 5 skor teratas
+            const topScores = leaderboard.slice(0, 5);
+            localStorage.setItem('islamicGameLeaderboard', JSON.stringify(topScores));
+            
+            renderLeaderboard();
+        }
+
+        function renderLeaderboard() {
+            const leaderboard = JSON.parse(localStorage.getItem('islamicGameLeaderboard'));
+            const leaderboardList = document.getElementById('leaderboard-list');
+            
+            if (leaderboard.length === 0) {
+                leaderboardList.innerHTML = '<p style="text-align: center; color: var(--hijau-pastel);">Belum ada skor tercatat</p>';
+                return;
+            }
+            
+            let leaderboardHTML = '';
+            leaderboard.forEach((entry, index) => {
+                const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '🔸';
+                leaderboardHTML += `
+                    <div class="leaderboard-item">
+                        <div>${medal} ${entry.game}</div>
+                        <div>${entry.percentage}% (${entry.score}/${entry.total})</div>
+                    </div>
+                `;
+            });
+            
+            leaderboardList.innerHTML = leaderboardHTML;
+        }
+
+        // Fungsi-fungsi placeholder untuk game lainnya
+        function startMathChallenge() {
+            document.getElementById('math-container').innerHTML = `
+                <div class="result success">
+                    <h3>Tantangan Matematika Segera Hadir!</h3>
+                    <p>Fitur ini sedang dalam pengembangan.</p>
+                </div>
+            `;
+        }
+
+        function showScienceTopic(topic) {
+            document.getElementById('science-container').innerHTML = `
+                <div class="result success">
+                    <h3>Eksplorasi ${topic.charAt(0).toUpperCase() + topic.slice(1)}</h3>
+                    <p>Konten untuk topik ini sedang dalam pengembangan.</p>
+                    <button class="submit-button" onclick="showGameContent('science-explorer')">Kembali</button>
+                </div>
+            `;
+        }
+
+        function startHistoryQuest() {
+            document.getElementById('history-container').innerHTML = `
+                <div class="result success">
+                    <h3>Misi Sejarah Islam</h3>
+                    <p>Fitur petualangan sejarah sedang dalam pengembangan.</p>
+                </div>
+            `;
+        }
+
+        function generatePuzzle() {
+            document.getElementById('puzzle-container').innerHTML = `
+                <div class="result success">
+                    <h3>Teka-Teki Ilmu</h3>
+                    <p>Koleksi teka-teki sedang disiapkan.</p>
+                </div>
+            `;
+        }
+
+        // Inisialisasi bahasa Arab saat pertama kali
+        initializeArabicLearning();
+    </script>
+</body>
+</html>
